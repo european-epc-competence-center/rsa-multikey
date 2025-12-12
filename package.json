@@ -1,6 +1,6 @@
 {
   "name": "@eecc/rsa-multikey",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Data integrity compatible multikey for RSA-PSS (PS256)",
   "type": "module",
   "exports": "./dist/index.js",
@@ -50,4 +50,3 @@
     ]
   }
 }
-
