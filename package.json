@@ -3,17 +3,21 @@
   "version": "0.0.1",
   "description": "Data integrity compatible multikey for RSA-PSS (PS256)",
   "type": "module",
-  "main": "lib/index.js",
-  "exports": {
-    ".": "./lib/index.js"
-  },
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "test": "npm run test-node",
     "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 10000 test/**/*.spec.js",
     "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
     "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
     "coverage-report": "c8 report",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "release": "node scripts/release.js",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "rsa",
@@ -23,8 +27,8 @@
     "cryptography",
     "digital-bazaar"
   ],
-  "author": "",
-  "license": "AGPL-3.0",
+  "author": "European EPC Competence Center GmbH",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "multiformats": "^9.9.0"
   },
@@ -32,7 +36,8 @@
     "c8": "^7.11.3",
     "chai": "^4.3.6",
     "cross-env": "^7.0.3",
-    "mocha": "^10.0.0"
+    "mocha": "^10.0.0",
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "node": ">=22.0.0"

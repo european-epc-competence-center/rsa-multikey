@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2024 Digital Bazaar, Inc.
+ * Copyright (c) 2024 European EPC Competence Center GmbH.
  */
 
 import * as RsaMultikey from '../lib/index.js';

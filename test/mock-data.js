@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2024 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2024 European EPC Competence Center GmbH. All rights reserved.
  */
 
 // Mock RSA keys will be generated during test setup

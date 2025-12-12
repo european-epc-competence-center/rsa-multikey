@@ -1,0 +1,77 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Tag version: $VERSION"
+      
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          TAG="${{ github.ref_name }}"
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "This appears to be the first release"
+            NOTES=$(git log --pretty=format:"- %s (%h)" --reverse)
+          else
+            echo "Generating release notes from $PREVIOUS_TAG to $TAG"
+            NOTES=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG})
+          fi
+          
+          # Escape newlines for GitHub output
+          NOTES="${NOTES//$'\n'/'%0A'}"
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create GitHub Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ steps.version.outputs.version }}';
+            const tagName = '${{ github.ref_name }}';
+            const releaseNotes = `${{ steps.release_notes.outputs.notes }}`;
+            
+            const releaseBody = `## Release ${version}
+            
+            ${releaseNotes}
+            
+            ---
+            
+            **Full Changelog**: ${tagName}...${tagName}
+            `;
+            
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tagName,
+              name: `Release ${version}`,
+              body: releaseBody,
+              draft: false,
+              prerelease: false
+            });
+      
+      - name: Output release URL
+        run: |
+          echo "Release created: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+

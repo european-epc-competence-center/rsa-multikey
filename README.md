@@ -196,4 +196,4 @@ const suite = new PS256Signature2020({ key: jsonWebKey2020 });
 
 ## License
 
-AGPL-3.0
+BSD 3-Clause License
