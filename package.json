@@ -1,0 +1,48 @@
+{
+  "name": "@eecc/rsa-multikey",
+  "version": "0.0.1",
+  "description": "Data integrity compatible multikey for RSA-PSS (PS256)",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "scripts": {
+    "test": "npm run test-node",
+    "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 10000 test/**/*.spec.js",
+    "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
+    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
+    "coverage-report": "c8 report",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "rsa",
+    "multikey",
+    "ps256",
+    "rsa-pss",
+    "cryptography",
+    "digital-bazaar"
+  ],
+  "author": "",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "multiformats": "^9.9.0"
+  },
+  "devDependencies": {
+    "c8": "^7.11.3",
+    "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.0.0"
+  },
+  "peerDependencies": {
+    "node": ">=22.0.0"
+  },
+  "c8": {
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
+    ]
+  }
+}
+
